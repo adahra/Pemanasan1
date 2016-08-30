@@ -66,7 +66,6 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-
             public boolean onQueryTextSubmit(String query) {
                 Log.i("FOLLOWING", query);
                 searchView.clearFocus();
@@ -74,7 +73,6 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
             }
 
             @Override
-
             public boolean onQueryTextChange(String newText) {
                 Log.i("FOLLOWING", newText);
                 searchCommunity(newText.toLowerCase().trim());

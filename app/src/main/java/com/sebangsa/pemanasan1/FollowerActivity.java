@@ -44,11 +44,8 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
         recView.setLayoutManager(new LinearLayoutManager(this));
         editTextSearch = (EditText) findViewById(R.id.editText_search);
         editTextSearch.setOnKeyListener(this);
-
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-
         retrieveFollower();
-
         setTitle("Follower");
     }
 
@@ -59,8 +56,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
@@ -71,7 +66,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-
             public boolean onQueryTextSubmit(String query) {
                 Log.i("FOLLOWING", query);
                 searchView.clearFocus();
@@ -79,7 +73,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
             }
 
             @Override
-
             public boolean onQueryTextChange(String newText) {
                 Log.i("FOLLOWING", newText);
                 searchUser(newText.toLowerCase().trim());
@@ -87,8 +80,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
             }
 
         });
-
-
         return true;
     }
 
@@ -104,7 +95,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
         call.enqueue(new Callback<UserWrapper>() {
             @Override
             public void onResponse(Call<UserWrapper> call, Response<UserWrapper> response) {
-//                Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
                 userList = new ArrayList<User>();
                 for (User u : response.body().getUsers()) {
                     Log.i("FOLLOWER", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
@@ -121,7 +111,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
                     user.setAvatar(avatar);
                     userList.add(user);
                 }
-
                 setAdapter(userList);
             }
 
@@ -135,9 +124,7 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         searchUser(editTextSearch.getText().toString().toLowerCase().trim());
-
         Log.i("FOLLOWER", editTextSearch.getText().toString());
-
         return false;
     }
 
@@ -148,7 +135,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
                 userListTemp.add(u);
             }
         }
-
         setAdapter(userListTemp);
     }
 }

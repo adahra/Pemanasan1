@@ -35,6 +35,7 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
     private SebangsaRecyclerViewAdapter adapter;
     private EditText editTextSearch;
     private List<User> userList;
+    private final String LOG = "FOLLOWING ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,35 +55,27 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
-
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
-
             public boolean onQueryTextSubmit(String query) {
-                Log.i("FOLLOWING", query);
+                Log.i(LOG, query);
                 searchView.clearFocus();
                 return true;
             }
 
             @Override
-
             public boolean onQueryTextChange(String newText) {
-                Log.i("FOLLOWING", newText);
+                Log.i(LOG, newText);
                 searchUser(newText.toLowerCase().trim());
                 return false;
             }
 
         });
-
         return true;
     }
 
@@ -103,8 +96,7 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
         call.enqueue(new Callback<UserWrapper>() {
             @Override
             public void onResponse(Call<UserWrapper> call, Response<UserWrapper> response) {
-//                Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
-                userList = new ArrayList<User>();
+               userList = new ArrayList<User>();
                 for (User u : response.body().getUsers()) {
                     Log.i("FOLLOWING", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
                     User user = new User();
