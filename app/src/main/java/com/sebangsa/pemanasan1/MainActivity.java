@@ -1,5 +1,6 @@
 package com.sebangsa.pemanasan1;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.i(LOG, "Follower");
         } else {
             Log.i(LOG, "Community");
+            Intent i = new Intent(MainActivity.this, CommunityActivity.class);
+            startActivity(i);
         }
     }
 }

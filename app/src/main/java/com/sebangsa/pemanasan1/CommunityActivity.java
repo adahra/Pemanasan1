@@ -8,8 +8,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.sebangsa.pemanasan1.adapter.SebangsaRecyclerViewAdapter;
+import com.sebangsa.pemanasan1.model.Community;
+import com.sebangsa.pemanasan1.model.CommunityWrapper;
 import com.sebangsa.pemanasan1.model.User;
-import com.sebangsa.pemanasan1.model.UserWrapper;
 import com.sebangsa.pemanasan1.retrofit.SebangsaService;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FollowingActivity extends AppCompatActivity {
+public class CommunityActivity extends AppCompatActivity {
     private RecyclerView recView;
     private SebangsaRecyclerViewAdapter adapter;
 
@@ -33,18 +34,16 @@ public class FollowingActivity extends AppCompatActivity {
         recView = (RecyclerView) findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
 
-        retrieveFollowing();
-
-        setTitle("Following");
-
+        setTitle("Community");
+        retrieveCommunity();
     }
 
-    private void setAdapter(List<User> userList) {
-        adapter = new SebangsaRecyclerViewAdapter(userList, this, "User");
+    private void setAdapter(List<Community> communityList) {
+        adapter = new SebangsaRecyclerViewAdapter(communityList, this, "Community");
         recView.setAdapter(adapter);
     }
 
-    private void retrieveFollowing() {
+    private void retrieveCommunity() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://hangga.web.id/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -52,33 +51,33 @@ public class FollowingActivity extends AppCompatActivity {
 
         SebangsaService service = retrofit.create(SebangsaService.class);
 
-        Call<UserWrapper> call = service.listUsers();
-        call.enqueue(new Callback<UserWrapper>() {
+        Call<CommunityWrapper> call = service.listCommunity();
+        call.enqueue(new Callback<CommunityWrapper>() {
             @Override
-            public void onResponse(Call<UserWrapper> call, Response<UserWrapper> response) {
+            public void onResponse(Call<CommunityWrapper> call, Response<CommunityWrapper> response) {
                 Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
-                List<User> userList = new ArrayList<User>();
-                for (User u : response.body().getUsers()) {
-                    Log.i("FOLLOWING", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
-                    User user = new User();
-                    user.setUsername(u.getUsername());
-                    user.setName(u.getName());
+                List<Community> communityList = new ArrayList<Community>();
+                for (Community c : response.body().getCommunities()) {
+                    Log.i("FOLLOWING", c.getName().trim() + " : " + c.getDescription().trim() + " : " + c.getAction().isMember() + " : " + c.getAvatar().getMedium().trim());
+                    Community community = new Community();
+                    community.setName(c.getName().trim());
+                    community.setDescription(c.getDescription().trim());
 
-                    User.Action action = new User.Action();
-                    action.setFollow(u.getAction().isFollow());
-                    user.setAction(action);
+                    Community.Action action = new Community.Action();
+                    action.setMember(c.getAction().isMember());
+                    community.setAction(action);
 
-                    User.Avatar avatar = new User.Avatar();
-                    avatar.setMedium(u.getAvatar().getMedium());
-                    user.setAvatar(avatar);
-                    userList.add(user);
+                    Community.Avatar avatar = new Community.Avatar();
+                    avatar.setMedium(c.getAvatar().getMedium().trim());
+                    community.setAvatar(avatar);
+                    communityList.add(community);
                 }
 
-                setAdapter(userList);
+                setAdapter(communityList);
             }
 
             @Override
-            public void onFailure(Call<UserWrapper> call, Throwable t) {
+            public void onFailure(Call<CommunityWrapper> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
             }
         });

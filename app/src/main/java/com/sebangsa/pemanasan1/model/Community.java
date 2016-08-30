@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by sebangsa on 8/30/16.
  */
-public class User {
-    @Expose
-    @SerializedName("username")
-    private String username;
-
+public class Community {
     @Expose
     @SerializedName("name")
     private String name;
+
+    @Expose
+    @SerializedName("description")
+    private String description;
 
     @Expose
     @SerializedName("action")
@@ -25,27 +25,15 @@ public class User {
 
     public static class Action {
         @Expose
-        @SerializedName("is_muted")
-        private boolean muted;
+        @SerializedName("is_member")
+        private boolean member;
 
-        @Expose
-        @SerializedName("is_follow")
-        private boolean follow;
-
-        public boolean isMuted() {
-            return muted;
+        public boolean isMember() {
+            return member;
         }
 
-        public void setMuted(boolean muted) {
-            this.muted = muted;
-        }
-
-        public boolean isFollow() {
-            return follow;
-        }
-
-        public void setFollow(boolean follow) {
-            this.follow = follow;
+        public void setMember(boolean member) {
+            this.member = member;
         }
     }
 
@@ -75,28 +63,28 @@ public class User {
         }
     }
 
-    public Action getAction() {
-        return action;
-    }
-
-    public void setAction(Action action) {
-        this.action = action;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action action) {
+        this.action = action;
     }
 
     public Avatar getAvatar() {
