@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".FollowingActivity" />
-        <activity android:name=".CommunityActivity"></activity>
+        <activity android:name=".CommunityActivity" />
+        <activity android:name=".FollowerActivity"></activity>
     </application>
 
 </manifest>

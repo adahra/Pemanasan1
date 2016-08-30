@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.sebangsa.pemanasan1.adapter.SebangsaRecyclerViewAdapter;
@@ -22,9 +25,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CommunityActivity extends AppCompatActivity {
+public class CommunityActivity extends AppCompatActivity implements View.OnKeyListener {
     private RecyclerView recView;
     private SebangsaRecyclerViewAdapter adapter;
+    private List<Community> communityList;
+    private EditText editTextSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,10 @@ public class CommunityActivity extends AppCompatActivity {
 
         recView = (RecyclerView) findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
+        editTextSearch = (EditText) findViewById(R.id.editText_search);
+        editTextSearch.setOnKeyListener(this);
+
+        recView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
         setTitle("Community");
         retrieveCommunity();
@@ -56,9 +65,9 @@ public class CommunityActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<CommunityWrapper> call, Response<CommunityWrapper> response) {
                 Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
-                List<Community> communityList = new ArrayList<Community>();
+                communityList = new ArrayList<Community>();
                 for (Community c : response.body().getCommunities()) {
-                    Log.i("FOLLOWING", c.getName().trim() + " : " + c.getDescription().trim() + " : " + c.getAction().isMember() + " : " + c.getAvatar().getMedium().trim());
+                    Log.i("COMMUNITY", c.getName().trim() + " : " + c.getDescription().trim() + " : " + c.getAction().isMember() + " : " + c.getAvatar().getMedium().trim());
                     Community community = new Community();
                     community.setName(c.getName().trim());
                     community.setDescription(c.getDescription().trim());
@@ -81,5 +90,19 @@ public class CommunityActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        List<Community> communityListTemp = new ArrayList<Community>();
+        for (Community c : communityList) {
+            if (c.getName().toLowerCase().contains(editTextSearch.getText().toString().toLowerCase().trim())) {
+                communityListTemp.add(c);
+            }
+        }
+
+        Log.i("COMMUNITY", editTextSearch.getText().toString());
+        setAdapter(communityListTemp);
+        return false;
     }
 }

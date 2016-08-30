@@ -24,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FollowingActivity extends AppCompatActivity implements View.OnKeyListener {
+public class FollowerActivity extends AppCompatActivity implements View.OnKeyListener {
     private RecyclerView recView;
     private SebangsaRecyclerViewAdapter adapter;
     private EditText editTextSearch;
@@ -41,10 +41,10 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
         editTextSearch.setOnKeyListener(this);
 
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        retrieveFollowing();
 
-        setTitle("Following");
+        retrieveFollower();
 
+        setTitle("Follower");
     }
 
     private void setAdapter(List<User> userList) {
@@ -52,7 +52,7 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
         recView.setAdapter(adapter);
     }
 
-    private void retrieveFollowing() {
+    private void retrieveFollower() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://hangga.web.id/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -60,14 +60,14 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
 
         SebangsaService service = retrofit.create(SebangsaService.class);
 
-        Call<UserWrapper> call = service.listUsersFollowing();
+        Call<UserWrapper> call = service.listUsersFollower();
         call.enqueue(new Callback<UserWrapper>() {
             @Override
             public void onResponse(Call<UserWrapper> call, Response<UserWrapper> response) {
                 Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
                 userList = new ArrayList<User>();
                 for (User u : response.body().getUsers()) {
-                    Log.i("FOLLOWING", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
+                    Log.i("FOLLOWER", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
                     User user = new User();
                     user.setUsername(u.getUsername());
                     user.setName(u.getName());

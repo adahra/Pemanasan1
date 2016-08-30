@@ -72,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(i);
         } else if (v.getId() == buttonFollower.getId()) {
             Log.i(LOG, "Follower");
+            Intent i = new Intent(MainActivity.this, FollowerActivity.class);
+            startActivity(i);
         } else {
             Log.i(LOG, "Community");
             Intent i = new Intent(MainActivity.this, CommunityActivity.class);

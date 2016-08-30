@@ -13,7 +13,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/editText"
+            android:id="@+id/editText_search"
             android:hint="Type your keyword here..."/>
 
         <android.support.v7.widget.RecyclerView

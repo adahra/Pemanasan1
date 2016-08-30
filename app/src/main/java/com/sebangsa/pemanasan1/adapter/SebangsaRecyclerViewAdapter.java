@@ -1,7 +1,10 @@
 package com.sebangsa.pemanasan1.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.sebangsa.pemanasan1.R;
 import com.sebangsa.pemanasan1.model.Community;
 import com.sebangsa.pemanasan1.model.User;
@@ -53,16 +57,25 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
             holder.username.setText("@" + user.getUsername());
             holder.name.setText(user.getName());
             holder.description.setVisibility(View.INVISIBLE);
-            Glide.with(c)
-                    .load(user.getAvatar().getMedium().trim())
-                    .centerCrop()
-                    .placeholder(R.mipmap.ic_launcher)
-                    .crossFade()
-                    .into(holder.imageAvatar);
+//            Glide.with(c)
+//                    .load(user.getAvatar().getMedium().trim())
+//                    .centerCrop()
+//                    .placeholder(R.mipmap.ic_launcher)
+//                    .crossFade()
+//                    .into(holder.imageAvatar);
+
+            Glide.with(c).load(user.getAvatar().getMedium().trim()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.imageAvatar) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(c.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    holder.imageAvatar.setImageDrawable(circularBitmapDrawable);
+                }
+            });
             holder.buttonFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                ((ImageButton) v).setImageResource(R.drawable.i_followed);
                     User.Action a = new User.Action();
 
                     if (user.getAction().isFollow()) {
@@ -76,22 +89,31 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
                 }
             });
 
+
             setImageButtonUser(user, holder);
         } else if (type.equals("Community")) {
             final Community community = listCommunities.get(position);
             holder.username.setText("+" + community.getName());
             holder.name.setText(community.getDescription());
             holder.description.setVisibility(View.INVISIBLE);
-            Glide.with(c)
-                    .load(community.getAvatar().getMedium().trim())
-                    .centerCrop()
-                    .placeholder(R.mipmap.ic_launcher)
-                    .crossFade()
-                    .into(holder.imageAvatar);
+//            Glide.with(c)
+//                    .load(community.getAvatar().getMedium().trim())
+//                    .centerCrop()
+//                    .placeholder(R.mipmap.ic_launcher)
+//                    .crossFade()
+//                    .into(holder.imageAvatar);
+            Glide.with(c).load(community.getAvatar().getMedium().trim()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.imageAvatar) {
+                @Override
+                protected void setResource(Bitmap resource) {
+                    RoundedBitmapDrawable circularBitmapDrawable =
+                            RoundedBitmapDrawableFactory.create(c.getResources(), resource);
+                    circularBitmapDrawable.setCircular(true);
+                    holder.imageAvatar.setImageDrawable(circularBitmapDrawable);
+                }
+            });
             holder.buttonFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                ((ImageButton) v).setImageResource(R.drawable.i_followed);
                     Community.Action a = new Community.Action();
 
                     if (community.getAction().isMember()) {
