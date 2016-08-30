@@ -1,11 +1,17 @@
 package com.sebangsa.pemanasan1;
 
+import android.support.v4.app.NavUtils;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,7 +50,40 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
         retrieveFollowing();
 
         setTitle("Following");
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+
+            public boolean onQueryTextSubmit(String query) {
+                Log.i("FOLLOWING", query);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+
+            public boolean onQueryTextChange(String newText) {
+                Log.i("FOLLOWING", newText);
+                searchUser(newText.toLowerCase().trim());
+                return false;
+            }
+
+        });
+
+        return true;
     }
 
     private void setAdapter(List<User> userList) {
@@ -64,7 +103,7 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
         call.enqueue(new Callback<UserWrapper>() {
             @Override
             public void onResponse(Call<UserWrapper> call, Response<UserWrapper> response) {
-                Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
                 userList = new ArrayList<User>();
                 for (User u : response.body().getUsers()) {
                     Log.i("FOLLOWING", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
@@ -94,15 +133,17 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
+        searchUser(editTextSearch.getText().toString().toLowerCase().trim());
+        return false;
+    }
+
+    private void searchUser(String query) {
         List<User> userListTemp = new ArrayList<User>();
         for (User u : userList) {
-            if (u.getUsername().toLowerCase().contains(editTextSearch.getText().toString().toLowerCase().trim())) {
+            if (u.getUsername().toLowerCase().contains(query)) {
                 userListTemp.add(u);
             }
         }
-
-        Log.i("FOLLOWER", editTextSearch.getText().toString());
         setAdapter(userListTemp);
-        return false;
     }
 }

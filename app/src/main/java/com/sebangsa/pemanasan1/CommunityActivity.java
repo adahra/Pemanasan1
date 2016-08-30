@@ -1,11 +1,16 @@
 package com.sebangsa.pemanasan1;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -47,6 +52,40 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
         retrieveCommunity();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+
+            public boolean onQueryTextSubmit(String query) {
+                Log.i("FOLLOWING", query);
+                searchView.clearFocus();
+                return true;
+            }
+
+            @Override
+
+            public boolean onQueryTextChange(String newText) {
+                Log.i("FOLLOWING", newText);
+                searchCommunity(newText.toLowerCase().trim());
+                return false;
+            }
+
+        });
+
+        return true;
+    }
+
     private void setAdapter(List<Community> communityList) {
         adapter = new SebangsaRecyclerViewAdapter(communityList, this, "Community");
         recView.setAdapter(adapter);
@@ -64,7 +103,7 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
         call.enqueue(new Callback<CommunityWrapper>() {
             @Override
             public void onResponse(Call<CommunityWrapper> call, Response<CommunityWrapper> response) {
-                Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
                 communityList = new ArrayList<Community>();
                 for (Community c : response.body().getCommunities()) {
                     Log.i("COMMUNITY", c.getName().trim() + " : " + c.getDescription().trim() + " : " + c.getAction().isMember() + " : " + c.getAvatar().getMedium().trim());
@@ -94,15 +133,19 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
+        Log.i("COMMUNITY", editTextSearch.getText().toString());
+        searchCommunity(editTextSearch.getText().toString().toLowerCase().trim());
+        return false;
+    }
+
+
+    private void searchCommunity(String query) {
         List<Community> communityListTemp = new ArrayList<Community>();
         for (Community c : communityList) {
-            if (c.getName().toLowerCase().contains(editTextSearch.getText().toString().toLowerCase().trim())) {
+            if (c.getName().toLowerCase().contains(query)) {
                 communityListTemp.add(c);
             }
         }
-
-        Log.i("COMMUNITY", editTextSearch.getText().toString());
         setAdapter(communityListTemp);
-        return false;
     }
 }
