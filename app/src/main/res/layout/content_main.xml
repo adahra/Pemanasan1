@@ -29,4 +29,5 @@
         android:layout_height="wrap_content"
         android:text="Community"
         android:id="@+id/button_community_MA" />
+
 </LinearLayout>
