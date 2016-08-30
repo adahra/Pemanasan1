@@ -1,5 +1,6 @@
 package com.sebangsa.pemanasan1;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if (v.getId() == buttonFollowing.getId()) {
             Log.i(LOG, "Following");
+            Intent i = new Intent(MainActivity.this, FollowingActivity.class);
+            startActivity(i);
         } else if (v.getId() == buttonFollower.getId()) {
             Log.i(LOG, "Follower");
         } else {
