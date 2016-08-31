@@ -1,5 +1,7 @@
 package com.sebangsa.pemanasan1;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -50,7 +52,16 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
         retrieveFollowing();
 
-        setTitle("Following");
+        actionBarSetup();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void actionBarSetup() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            android.support.v7.app.ActionBar ab = getSupportActionBar();
+            ab.setTitle("dennywidyatmokoasli");
+            ab.setSubtitle("Following");
+        }
     }
 
     @Override

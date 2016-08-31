@@ -1,5 +1,7 @@
 package com.sebangsa.pemanasan1;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,7 +48,16 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
         editTextSearch.setOnKeyListener(this);
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
         retrieveFollower();
-        setTitle("Follower");
+        actionBarSetup();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void actionBarSetup() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            android.support.v7.app.ActionBar ab = getSupportActionBar();
+            ab.setTitle("dennywidyatmokoasli");
+            ab.setSubtitle("Follower");
+        }
     }
 
     private void setAdapter(List<User> userList) {

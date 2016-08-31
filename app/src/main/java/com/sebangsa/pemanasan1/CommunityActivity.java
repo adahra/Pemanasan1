@@ -1,5 +1,7 @@
 package com.sebangsa.pemanasan1;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,8 +50,17 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
 
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
 
-        setTitle("Community");
         retrieveCommunity();
+        actionBarSetup();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void actionBarSetup() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            android.support.v7.app.ActionBar ab = getSupportActionBar();
+            ab.setTitle("enda");
+            ab.setSubtitle("Communities");
+        }
     }
 
     @Override
