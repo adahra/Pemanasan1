@@ -2,6 +2,6 @@
 <resources>
     <color name="colorPrimary">#FF94c84B</color>
     <color name="colorPrimaryDark">#FF94c84B</color>
-    <color name="colorAccent">#7e7b7c</color>
-    <color name="colorSparator">#7e7b7c</color>
+    <color name="colorAccent">#afafaf</color>
+    <color name="colorSparator">#afafaf</color>
 </resources>

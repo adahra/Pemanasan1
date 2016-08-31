@@ -57,12 +57,6 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
             holder.username.setText("@" + user.getUsername());
             holder.name.setText(user.getName());
             holder.description.setVisibility(View.INVISIBLE);
-//            Glide.with(c)
-//                    .load(user.getAvatar().getMedium().trim())
-//                    .centerCrop()
-//                    .placeholder(R.mipmap.ic_launcher)
-//                    .crossFade()
-//                    .into(holder.imageAvatar);
 
             Glide.with(c).load(user.getAvatar().getMedium().trim()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.imageAvatar) {
                 @Override
@@ -73,6 +67,7 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
                     holder.imageAvatar.setImageDrawable(circularBitmapDrawable);
                 }
             });
+
             holder.buttonFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,19 +84,13 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
                 }
             });
 
-
             setImageButtonUser(user, holder);
         } else if (type.equals("Community")) {
             final Community community = listCommunities.get(position);
             holder.username.setText("+" + community.getName());
             holder.name.setText(community.getDescription());
             holder.description.setVisibility(View.INVISIBLE);
-//            Glide.with(c)
-//                    .load(community.getAvatar().getMedium().trim())
-//                    .centerCrop()
-//                    .placeholder(R.mipmap.ic_launcher)
-//                    .crossFade()
-//                    .into(holder.imageAvatar);
+
             Glide.with(c).load(community.getAvatar().getMedium().trim()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.imageAvatar) {
                 @Override
                 protected void setResource(Bitmap resource) {
@@ -128,7 +117,6 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
             });
             setImageButtonCommunity(community, holder);
         }
-
     }
 
     private void setImageButtonUser(User user, SebangsaRecyclerViewHolder holder) {
