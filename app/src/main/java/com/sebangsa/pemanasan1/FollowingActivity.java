@@ -2,9 +2,9 @@ package com.sebangsa.pemanasan1;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,40 +19,31 @@ import android.widget.Toast;
 
 import com.sebangsa.pemanasan1.adapter.SebangsaRecyclerViewAdapter;
 import com.sebangsa.pemanasan1.model.User;
-import com.sebangsa.pemanasan1.model.UserWrapper;
-import com.sebangsa.pemanasan1.retrofit.SebangsaService;
+import com.sebangsa.pemanasan1.retrofit.RetrofitService;
 import com.sebangsa.pemanasan1.ui.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class FollowingActivity extends AppCompatActivity implements View.OnKeyListener {
+    private final String LOG_TAG = "FOLLOWING ACTIVITY";
     private RecyclerView recView;
     private SebangsaRecyclerViewAdapter adapter;
     private EditText editTextSearch;
     private List<User> userList;
-    private final String LOG = "FOLLOWING ACTIVITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_following);
-
         recView = (RecyclerView) findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
         editTextSearch = (EditText) findViewById(R.id.editText_search);
         editTextSearch.setOnKeyListener(this);
-
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        retrieveFollowing();
-
         actionBarSetup();
+        RetrofitService retrofitService = new RetrofitService(this);
+        retrofitService.retrieveUser();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -74,14 +65,14 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.i(LOG, query);
+                Log.i(LOG_TAG, query);
                 searchView.clearFocus();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.i(LOG, newText);
+                Log.i(LOG_TAG, newText);
                 searchUser(newText.toLowerCase().trim());
                 return false;
             }
@@ -90,48 +81,18 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
         return true;
     }
 
+    public void setUserListData(List<User> userList) {
+        this.userList = userList;
+        setAdapter(userList);
+    }
+
+    public void setFailureMessage() {
+        Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
+    }
+
     private void setAdapter(List<User> userList) {
         adapter = new SebangsaRecyclerViewAdapter(userList, this, "User");
         recView.setAdapter(adapter);
-    }
-
-    private void retrieveFollowing() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://hangga.web.id/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        SebangsaService service = retrofit.create(SebangsaService.class);
-
-        Call<UserWrapper> call = service.listUsersFollowing();
-        call.enqueue(new Callback<UserWrapper>() {
-            @Override
-            public void onResponse(Call<UserWrapper> call, Response<UserWrapper> response) {
-               userList = new ArrayList<User>();
-                for (User u : response.body().getUsers()) {
-                    Log.i("FOLLOWING", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
-                    User user = new User();
-                    user.setUsername(u.getUsername());
-                    user.setName(u.getName());
-
-                    User.Action action = new User.Action();
-                    action.setFollow(u.getAction().isFollow());
-                    user.setAction(action);
-
-                    User.Avatar avatar = new User.Avatar();
-                    avatar.setMedium(u.getAvatar().getMedium());
-                    user.setAvatar(avatar);
-                    userList.add(user);
-                }
-
-                setAdapter(userList);
-            }
-
-            @Override
-            public void onFailure(Call<UserWrapper> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     @Override

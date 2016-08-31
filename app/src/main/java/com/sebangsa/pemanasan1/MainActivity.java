@@ -1,9 +1,6 @@
 package com.sebangsa.pemanasan1;
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -18,7 +15,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private final String LOG = "MAIN ACTIVITY";
+    private final String LOG_TAG = "MAIN ACTIVITY";
     private Button buttonFollowing, buttonFollower, buttonCommunity;
 
     @Override
@@ -65,15 +62,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == buttonFollowing.getId()) {
-            Log.i(LOG, "Following");
+            Log.i(LOG_TAG, "Following");
             Intent i = new Intent(MainActivity.this, FollowingActivity.class);
             startActivity(i);
         } else if (v.getId() == buttonFollower.getId()) {
-            Log.i(LOG, "Follower");
+            Log.i(LOG_TAG, "Follower");
             Intent i = new Intent(MainActivity.this, FollowerActivity.class);
             startActivity(i);
         } else {
-            Log.i(LOG, "Community");
+            Log.i(LOG_TAG, "Community");
             Intent i = new Intent(MainActivity.this, CommunityActivity.class);
             startActivity(i);
         }

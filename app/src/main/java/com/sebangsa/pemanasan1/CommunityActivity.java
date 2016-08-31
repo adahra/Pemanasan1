@@ -2,9 +2,9 @@ package com.sebangsa.pemanasan1;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -19,20 +19,14 @@ import android.widget.Toast;
 
 import com.sebangsa.pemanasan1.adapter.SebangsaRecyclerViewAdapter;
 import com.sebangsa.pemanasan1.model.Community;
-import com.sebangsa.pemanasan1.model.CommunityWrapper;
-import com.sebangsa.pemanasan1.retrofit.SebangsaService;
+import com.sebangsa.pemanasan1.retrofit.RetrofitService;
 import com.sebangsa.pemanasan1.ui.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 public class CommunityActivity extends AppCompatActivity implements View.OnKeyListener {
+    private final String LOG_TAG = "COMMUNITY ACTIVITY";
     private RecyclerView recView;
     private SebangsaRecyclerViewAdapter adapter;
     private List<Community> communityList;
@@ -47,11 +41,19 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
         recView.setLayoutManager(new LinearLayoutManager(this));
         editTextSearch = (EditText) findViewById(R.id.editText_search);
         editTextSearch.setOnKeyListener(this);
-
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-
-        retrieveCommunity();
         actionBarSetup();
+        RetrofitService retrofitService = new RetrofitService(this);
+        retrofitService.retrieveCommunity();
+    }
+
+    public void setCommunityListData(List<Community> communityList) {
+        this.communityList = communityList;
+        setAdapter(communityList);
+    }
+
+    public void setFailureMessage() {
+        Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -65,8 +67,6 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
 
@@ -78,14 +78,14 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.i("FOLLOWING", query);
+                Log.i(LOG_TAG, query);
                 searchView.clearFocus();
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.i("FOLLOWING", newText);
+                Log.i(LOG_TAG, newText);
                 searchCommunity(newText.toLowerCase().trim());
                 return false;
             }
@@ -100,49 +100,9 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
         recView.setAdapter(adapter);
     }
 
-    private void retrieveCommunity() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://hangga.web.id/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        SebangsaService service = retrofit.create(SebangsaService.class);
-
-        Call<CommunityWrapper> call = service.listCommunity();
-        call.enqueue(new Callback<CommunityWrapper>() {
-            @Override
-            public void onResponse(Call<CommunityWrapper> call, Response<CommunityWrapper> response) {
-//                Toast.makeText(getApplicationContext(), "Success Retrieve: " + response.code() + "/" + response.message(), Toast.LENGTH_SHORT).show();
-                communityList = new ArrayList<Community>();
-                for (Community c : response.body().getCommunities()) {
-                    Log.i("COMMUNITY", c.getName().trim() + " : " + c.getDescription().trim() + " : " + c.getAction().isMember() + " : " + c.getAvatar().getMedium().trim());
-                    Community community = new Community();
-                    community.setName(c.getName().trim());
-                    community.setDescription(c.getDescription().trim());
-
-                    Community.Action action = new Community.Action();
-                    action.setMember(c.getAction().isMember());
-                    community.setAction(action);
-
-                    Community.Avatar avatar = new Community.Avatar();
-                    avatar.setMedium(c.getAvatar().getMedium().trim());
-                    community.setAvatar(avatar);
-                    communityList.add(community);
-                }
-
-                setAdapter(communityList);
-            }
-
-            @Override
-            public void onFailure(Call<CommunityWrapper> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        Log.i("COMMUNITY", editTextSearch.getText().toString());
+        Log.i(LOG_TAG, editTextSearch.getText().toString());
         searchCommunity(editTextSearch.getText().toString().toLowerCase().trim());
         return false;
     }
