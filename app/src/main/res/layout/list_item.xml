@@ -78,7 +78,7 @@
             android:layout_gravity="center_vertical|right"
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:background="@drawable/rounded_corners_imagebutton_white"
             android:padding="10dp"
             />

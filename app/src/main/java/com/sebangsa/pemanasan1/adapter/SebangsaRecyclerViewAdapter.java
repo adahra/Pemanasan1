@@ -38,7 +38,6 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
         } else {
             listCommunities = (List<Community>) list;
         }
-
         this.c = c;
         this.type = type;
     }
@@ -71,7 +70,6 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
                 @Override
                 public void onClick(View v) {
                     User.Action a = new User.Action();
-
                     if (user.getAction().isFollow()) {
                         a.setFollow(false);
                         user.setAction(a);
@@ -163,7 +161,6 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
 
         public SebangsaRecyclerViewHolder(View itemView) {
             super(itemView);
-
             username = (TextView) itemView.findViewById(R.id.textView_username);
             name = (TextView) itemView.findViewById(R.id.textView_name);
             imageAvatar = (ImageView) itemView.findViewById(R.id.imageView_avatar);

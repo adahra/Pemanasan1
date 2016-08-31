@@ -24,21 +24,10 @@ public class User {
     private Avatar avatar;
 
     public static class Action {
-        @Expose
-        @SerializedName("is_muted")
-        private boolean muted;
 
         @Expose
         @SerializedName("is_follow")
         private boolean follow;
-
-        public boolean isMuted() {
-            return muted;
-        }
-
-        public void setMuted(boolean muted) {
-            this.muted = muted;
-        }
 
         public boolean isFollow() {
             return follow;

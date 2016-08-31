@@ -38,21 +38,10 @@ public class Community {
     }
 
     public static class Avatar {
-        @Expose
-        @SerializedName("small")
-        private String small;
 
         @Expose
         @SerializedName("medium")
         private String medium;
-
-        public String getSmall() {
-            return small;
-        }
-
-        public void setSmall(String small) {
-            this.small = small;
-        }
 
         public String getMedium() {
             return medium;
