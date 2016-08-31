@@ -2,7 +2,6 @@ package com.sebangsa.pemanasan1.retrofit;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.sebangsa.pemanasan1.CommunityActivity;
 import com.sebangsa.pemanasan1.FollowerActivity;
@@ -54,17 +53,20 @@ public class RetrofitService {
             @Override
             public void onResponse(Call<UserWrapper> call, Response<UserWrapper> response) {
                 List<User> userList = new ArrayList<User>();
+                User user = null;
+                User.Action action = null;
+                User.Avatar avatar = null;
                 for (User u : response.body().getUsers()) {
                     Log.i("FOLLOW_USER", u.getUsername() + " : " + u.getName() + " : " + u.getAction().isFollow() + " : " + u.getAvatar().getMedium());
-                    User user = new User();
+                    user = new User();
                     user.setUsername(u.getUsername());
                     user.setName(u.getName());
 
-                    User.Action action = new User.Action();
+                    action = new User.Action();
                     action.setFollow(u.getAction().isFollow());
                     user.setAction(action);
 
-                    User.Avatar avatar = new User.Avatar();
+                    avatar = new User.Avatar();
                     avatar.setMedium(u.getAvatar().getMedium());
                     user.setAvatar(avatar);
                     userList.add(user);
@@ -99,17 +101,20 @@ public class RetrofitService {
             @Override
             public void onResponse(Call<CommunityWrapper> call, Response<CommunityWrapper> response) {
                 List<Community> communityList = new ArrayList<Community>();
+                Community community = null;
+                Community.Action action = null;
+                Community.Avatar avatar = null;
                 for (Community c : response.body().getCommunities()) {
                     Log.i("COMMUNITY", c.getName().trim() + " : " + c.getDescription().trim() + " : " + c.getAction().isMember() + " : " + c.getAvatar().getMedium().trim());
-                    Community community = new Community();
+                    community = new Community();
                     community.setName(c.getName().trim());
                     community.setDescription(c.getDescription().trim());
 
-                    Community.Action action = new Community.Action();
+                    action = new Community.Action();
                     action.setMember(c.getAction().isMember());
                     community.setAction(action);
 
-                    Community.Avatar avatar = new Community.Avatar();
+                    avatar = new Community.Avatar();
                     avatar.setMedium(c.getAvatar().getMedium().trim());
                     community.setAvatar(avatar);
                     communityList.add(community);

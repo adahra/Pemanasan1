@@ -36,24 +36,14 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_following);
-
-        recView = (RecyclerView) findViewById(R.id.rec_list);
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        actionBarSetup();
         editTextSearch = (EditText) findViewById(R.id.editText_search);
         editTextSearch.setOnKeyListener(this);
+        recView = (RecyclerView) findViewById(R.id.rec_list);
+        recView.setLayoutManager(new LinearLayoutManager(this));
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        actionBarSetup();
         RetrofitService retrofitService = new RetrofitService(this);
         retrofitService.retrieveCommunity();
-    }
-
-    public void setCommunityListData(List<Community> communityList) {
-        this.communityList = communityList;
-        setAdapter(communityList);
-    }
-
-    public void setFailureMessage() {
-        Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -69,13 +59,9 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
-
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.i(LOG_TAG, query);
@@ -89,15 +75,9 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
                 searchCommunity(newText.toLowerCase().trim());
                 return false;
             }
-
         });
 
         return true;
-    }
-
-    private void setAdapter(List<Community> communityList) {
-        adapter = new SebangsaRecyclerViewAdapter(communityList, this, "Community");
-        recView.setAdapter(adapter);
     }
 
     @Override
@@ -107,6 +87,10 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
         return false;
     }
 
+    private void setAdapter(List<Community> communityList) {
+        adapter = new SebangsaRecyclerViewAdapter(communityList, this, "Community");
+        recView.setAdapter(adapter);
+    }
 
     private void searchCommunity(String query) {
         List<Community> communityListTemp = new ArrayList<Community>();
@@ -116,5 +100,14 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
             }
         }
         setAdapter(communityListTemp);
+    }
+
+    public void setCommunityListData(List<Community> communityList) {
+        this.communityList = communityList;
+        setAdapter(communityList);
+    }
+
+    public void setFailureMessage() {
+        Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
     }
 }

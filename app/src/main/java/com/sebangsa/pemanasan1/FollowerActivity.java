@@ -36,13 +36,12 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_following);
-
-        recView = (RecyclerView) findViewById(R.id.rec_list);
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        actionBarSetup();
         editTextSearch = (EditText) findViewById(R.id.editText_search);
         editTextSearch.setOnKeyListener(this);
+        recView = (RecyclerView) findViewById(R.id.rec_list);
+        recView.setLayoutManager(new LinearLayoutManager(this));
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        actionBarSetup();
         RetrofitService retrofitService = new RetrofitService(this);
         retrofitService.retrieveUser();
     }
@@ -56,31 +55,13 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
         }
     }
 
-    public void setUserListData(List<User> userList) {
-        this.userList = userList;
-        setAdapter(userList);
-    }
-
-    public void setFailureMessage() {
-        Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
-    }
-
-    private void setAdapter(List<User> userList) {
-        adapter = new SebangsaRecyclerViewAdapter(userList, this, "User");
-        recView.setAdapter(adapter);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
         MenuItem searchItem = menu.findItem(R.id.action_search);
-
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
             @Override
             public boolean onQueryTextSubmit(String query) {
                 Log.i(LOG_TAG, query);
@@ -94,7 +75,6 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
                 searchUser(newText.toLowerCase().trim());
                 return false;
             }
-
         });
         return true;
     }
@@ -106,6 +86,11 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
         return false;
     }
 
+    private void setAdapter(List<User> userList) {
+        adapter = new SebangsaRecyclerViewAdapter(userList, this, "User");
+        recView.setAdapter(adapter);
+    }
+
     private void searchUser(String query) {
         List<User> userListTemp = new ArrayList<User>();
         for (User u : userList) {
@@ -114,5 +99,14 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
             }
         }
         setAdapter(userListTemp);
+    }
+
+    public void setUserListData(List<User> userList) {
+        this.userList = userList;
+        setAdapter(userList);
+    }
+
+    public void setFailureMessage() {
+        Toast.makeText(getApplicationContext(), "Fail Retrieve", Toast.LENGTH_SHORT).show();
     }
 }
