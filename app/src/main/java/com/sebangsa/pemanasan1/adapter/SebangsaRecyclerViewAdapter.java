@@ -87,7 +87,13 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
         } else if (type.equals("Community")) {
             final Community community = listCommunities.get(position);
             holder.username.setText("+" + community.getName());
-            holder.name.setText(community.getDescription());
+            String description = "";
+            if (community.getDescription().length() > 50) {
+                description = community.getDescription().substring(0, 49) + "...";
+            } else {
+                description = community.getDescription();
+            }
+            holder.name.setText(description);
             holder.description.setVisibility(View.INVISIBLE);
 
             Glide.with(c).load(community.getAvatar().getMedium().trim()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.imageAvatar) {
