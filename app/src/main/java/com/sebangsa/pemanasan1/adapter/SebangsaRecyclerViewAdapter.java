@@ -2,7 +2,6 @@ package com.sebangsa.pemanasan1.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
@@ -122,20 +121,20 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
     private void setImageButtonUser(User user, SebangsaRecyclerViewHolder holder) {
         if (user.getAction().isFollow()) {
             holder.buttonFollow.setImageResource(R.drawable.i_followed);
-            holder.buttonFollow.setBackgroundColor(Color.parseColor("#FF94c84B"));
+            holder.buttonFollow.setBackgroundResource(R.drawable.rounded_corners_imagebutton_green);
         } else {
             holder.buttonFollow.setImageResource(R.drawable.i_follow);
-            holder.buttonFollow.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+            holder.buttonFollow.setBackgroundResource(R.drawable.rounded_corners_imagebutton_white);
         }
     }
 
     private void setImageButtonCommunity(Community community, SebangsaRecyclerViewHolder holder) {
         if (community.getAction().isMember()) {
             holder.buttonFollow.setImageResource(R.drawable.i_joined);
-            holder.buttonFollow.setBackgroundColor(Color.parseColor("#FF94c84B"));
+            holder.buttonFollow.setBackgroundResource(R.drawable.rounded_corners_imagebutton_green);
         } else {
             holder.buttonFollow.setImageResource(R.drawable.i_join);
-            holder.buttonFollow.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
+            holder.buttonFollow.setBackgroundResource(R.drawable.rounded_corners_imagebutton_white);
         }
     }
 

@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonFollower.setOnClickListener(this);
         buttonCommunity = (Button) findViewById(R.id.button_community_MA);
         buttonCommunity.setOnClickListener(this);
+        setTitle("Sebangsa");
     }
 
     @Override

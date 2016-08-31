@@ -1,4 +1,4 @@
-package com.sebangsa.pemanasan1;
+package com.sebangsa.pemanasan1.ui;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.sebangsa.pemanasan1.R;
+
 /**
  * Created by sebangsa on 8/30/16.
  */
@@ -14,7 +16,7 @@ public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration{
     private Drawable mDivider;
 
     public SimpleDividerItemDecoration(Context context) {
-        mDivider = ContextCompat.getDrawable(context,R.drawable.line_divider);
+        mDivider = ContextCompat.getDrawable(context, R.drawable.line_divider);
     }
 
     @Override

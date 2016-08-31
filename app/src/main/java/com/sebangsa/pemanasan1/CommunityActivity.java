@@ -20,8 +20,8 @@ import android.widget.Toast;
 import com.sebangsa.pemanasan1.adapter.SebangsaRecyclerViewAdapter;
 import com.sebangsa.pemanasan1.model.Community;
 import com.sebangsa.pemanasan1.model.CommunityWrapper;
-import com.sebangsa.pemanasan1.model.User;
 import com.sebangsa.pemanasan1.retrofit.SebangsaService;
+import com.sebangsa.pemanasan1.ui.SimpleDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
