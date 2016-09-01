@@ -23,34 +23,9 @@ public class Community {
     @SerializedName("avatar")
     private Avatar avatar;
 
-    public static class Action {
-        @Expose
-        @SerializedName("is_member")
-        private boolean member;
-
-        public boolean isMember() {
-            return member;
-        }
-
-        public void setMember(boolean member) {
-            this.member = member;
-        }
-    }
-
-    public static class Avatar {
-
-        @Expose
-        @SerializedName("medium")
-        private String medium;
-
-        public String getMedium() {
-            return medium;
-        }
-
-        public void setMedium(String medium) {
-            this.medium = medium;
-        }
-    }
+    @Expose
+    @SerializedName("statistic")
+    private Statistic statistic;
 
     public String getName() {
         return name;
@@ -82,5 +57,57 @@ public class Community {
 
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
+    }
+
+    public Statistic getStatistic() {
+        return statistic;
+    }
+
+    public void setStatistic(Statistic statistic) {
+        this.statistic = statistic;
+    }
+
+    public static class Action {
+        @Expose
+        @SerializedName("is_member")
+        private boolean member;
+
+        public boolean isMember() {
+            return member;
+        }
+
+        public void setMember(boolean member) {
+            this.member = member;
+        }
+    }
+
+    public static class Avatar {
+
+        @Expose
+        @SerializedName("medium")
+        private String medium;
+
+        public String getMedium() {
+            return medium;
+        }
+
+        public void setMedium(String medium) {
+            this.medium = medium;
+        }
+    }
+
+    public static class Statistic {
+
+        @Expose
+        @SerializedName("user")
+        private String user;
+
+        public String getUser() {
+            return user;
+        }
+
+        public void setUser(String user) {
+            this.user = user;
+        }
     }
 }
