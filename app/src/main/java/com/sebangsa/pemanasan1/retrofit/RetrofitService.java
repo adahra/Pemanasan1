@@ -113,6 +113,7 @@ public class RetrofitService {
                 Community community = null;
                 Community.Action action = null;
                 Community.Avatar avatar = null;
+                Community.Statistic statistic = null;
                 for (Community c : response.body().getCommunities()) {
                     Log.i("COMMUNITY", c.getName().trim() + " : " + c.getDescription().trim() + " : " + c.getAction().isMember() + " : " + c.getAvatar().getMedium().trim());
                     community = new Community();
@@ -126,6 +127,10 @@ public class RetrofitService {
                     avatar = new Community.Avatar();
                     avatar.setMedium(c.getAvatar().getMedium().trim());
                     community.setAvatar(avatar);
+
+                    statistic = new Community.Statistic();
+                    statistic.setUser(c.getStatistic().getUser());
+                    community.setStatistic(statistic);
                     communityList.add(community);
                 }
                 ca.setCommunityListData(communityList);

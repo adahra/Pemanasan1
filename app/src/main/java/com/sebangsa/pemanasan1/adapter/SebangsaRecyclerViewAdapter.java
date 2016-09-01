@@ -54,7 +54,7 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
             final User user = listUser.get(position);
             holder.username.setText("@" + user.getUsername());
             holder.name.setText(user.getName());
-            holder.description.setVisibility(View.INVISIBLE);
+            holder.members.setVisibility(View.INVISIBLE);
 
             Glide.with(c).load(user.getAvatar().getMedium().trim()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.imageAvatar) {
                 @Override
@@ -85,14 +85,25 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
         } else if (type.equals("Community")) {
             final Community community = listCommunities.get(position);
             holder.username.setText("+" + community.getName());
-            String description = "";
+            String description = community.getDescription().trim();
             if (community.getDescription().length() > 50) {
                 description = community.getDescription().substring(0, 49) + "...";
-            } else {
-                description = community.getDescription();
             }
-            holder.name.setText(description);
-            holder.description.setVisibility(View.INVISIBLE);
+
+            if (description.length() == 0) {
+                holder.name.setText(community.getStatistic().getUser() + " Members");
+                holder.members.setVisibility(View.INVISIBLE);
+            } else {
+                holder.name.setText(description);
+                holder.members.setText(community.getStatistic().getUser() + " Members");
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) holder.container.getLayoutParams();
+                if (description.length() < 30) {
+                    params.height = 170;
+                } else {
+                    params.height = 190;
+                }
+                holder.container.setLayoutParams(params);
+            }
 
             Glide.with(c).load(community.getAvatar().getMedium().trim()).asBitmap().centerCrop().into(new BitmapImageViewTarget(holder.imageAvatar) {
                 @Override
@@ -157,7 +168,8 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
         private TextView name;
         private ImageView imageAvatar;
         private ImageButton buttonFollow;
-        private TextView description;
+        private TextView members;
+        private View container;
 
         public SebangsaRecyclerViewHolder(View itemView) {
             super(itemView);
@@ -165,7 +177,8 @@ public class SebangsaRecyclerViewAdapter extends RecyclerView.Adapter<SebangsaRe
             name = (TextView) itemView.findViewById(R.id.textView_name);
             imageAvatar = (ImageView) itemView.findViewById(R.id.imageView_avatar);
             buttonFollow = (ImageButton) itemView.findViewById(R.id.imageButton_follow);
-            description = (TextView) itemView.findViewById(R.id.textView_description);
+            members = (TextView) itemView.findViewById(R.id.textView_members);
+            container = itemView.findViewById(R.id.root_view);
         }
     }
 }
