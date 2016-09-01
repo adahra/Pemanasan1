@@ -27,6 +27,7 @@ import java.util.List;
 
 public class CommunityActivity extends AppCompatActivity implements View.OnKeyListener {
     private final String LOG_TAG = "COMMUNITY ACTIVITY";
+    private List<Community> x = null;
     private RecyclerView recView;
     private SebangsaRecyclerViewAdapter adapter;
     private List<Community> communityList;
@@ -42,8 +43,9 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
         recView = (RecyclerView) findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        RetrofitService retrofitService = new RetrofitService(this);
-        retrofitService.retrieveCommunity();
+        communityList = new ArrayList<Community>();
+        RetrofitService rs = RetrofitService.getRetrofitServiceInstance();
+        rs.retrieveCommunity(this);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

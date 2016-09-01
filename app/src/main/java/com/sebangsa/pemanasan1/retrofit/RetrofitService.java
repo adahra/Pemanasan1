@@ -27,9 +27,9 @@ public class RetrofitService {
     private final String BASE_URL = "http://hangga.web.id/";
     private SebangsaService service;
     private Context context;
+    private static RetrofitService retrofitService;
 
-    public RetrofitService(Context context) {
-        this.context = context;
+    public RetrofitService() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -37,7 +37,15 @@ public class RetrofitService {
         service = retrofit.create(SebangsaService.class);
     }
 
-    public void retrieveUser() {
+    public static RetrofitService getRetrofitServiceInstance(){
+        if (retrofitService == null) {
+            retrofitService=new RetrofitService();
+        }
+        return retrofitService;
+    }
+
+    public void retrieveUser(Context context) {
+        this.context = context;
         String className = context.getClass().getName();
         Call<UserWrapper> call = null;
         if (className.endsWith(".FollowingActivity")) {
@@ -94,7 +102,8 @@ public class RetrofitService {
         });
     }
 
-    public void retrieveCommunity() {
+    public void retrieveCommunity(Context context) {
+        this.context = context;
         final CommunityActivity ca = (CommunityActivity) context;
         Call<CommunityWrapper> call = service.listCommunity();
         call.enqueue(new Callback<CommunityWrapper>() {

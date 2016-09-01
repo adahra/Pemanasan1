@@ -42,8 +42,9 @@ public class FollowerActivity extends AppCompatActivity implements View.OnKeyLis
         recView = (RecyclerView) findViewById(R.id.rec_list);
         recView.setLayoutManager(new LinearLayoutManager(this));
         recView.addItemDecoration(new SimpleDividerItemDecoration(this));
-        RetrofitService retrofitService = new RetrofitService(this);
-        retrofitService.retrieveUser();
+        userList = new ArrayList<User>();
+        RetrofitService rs = RetrofitService.getRetrofitServiceInstance();
+        rs.retrieveUser(this);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
