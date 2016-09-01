@@ -74,7 +74,9 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
             @Override
             public boolean onQueryTextChange(String newText) {
                 Log.i(LOG_TAG, newText);
-                searchCommunity(newText.toLowerCase().trim());
+                if (communityList.size() > 0) {
+                    searchCommunity(newText.toLowerCase().trim());
+                }
                 return false;
             }
         });
@@ -85,7 +87,9 @@ public class CommunityActivity extends AppCompatActivity implements View.OnKeyLi
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         Log.i(LOG_TAG, editTextSearch.getText().toString());
-        searchCommunity(editTextSearch.getText().toString().toLowerCase().trim());
+        if (communityList.size() > 0) {
+            searchCommunity(editTextSearch.getText().toString().toLowerCase().trim());
+        }
         return false;
     }
 

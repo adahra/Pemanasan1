@@ -73,7 +73,9 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
             @Override
             public boolean onQueryTextChange(String newText) {
                 Log.i(LOG_TAG, newText);
-                searchUser(newText.toLowerCase().trim());
+                if (userList.size() > 0) {
+                    searchUser(newText.toLowerCase().trim());
+                }
                 return false;
             }
         });
@@ -82,7 +84,9 @@ public class FollowingActivity extends AppCompatActivity implements View.OnKeyLi
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
-        searchUser(editTextSearch.getText().toString().toLowerCase().trim());
+        if (userList.size() > 0) {
+            searchUser(editTextSearch.getText().toString().toLowerCase().trim());
+        }
         return false;
     }
 
